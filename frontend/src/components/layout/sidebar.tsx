@@ -48,7 +48,7 @@ export function Sidebar({ userName, userEmail }: SidebarProps) {
     : "U";
 
   return (
-    <aside className="fixed left-0 top-0 h-full w-64 bg-white border-r border-border flex flex-col z-40 shadow-sm">
+    <aside className="hidden md:flex fixed left-0 top-0 h-full w-64 bg-white border-r border-border flex-col z-40 shadow-sm">
       {/* Logo */}
       <div className="flex items-center gap-3 px-6 py-5 border-b">
         <div className="p-2 bg-brand-100 rounded-lg">
