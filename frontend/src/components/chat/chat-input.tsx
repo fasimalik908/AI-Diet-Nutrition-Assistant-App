@@ -37,9 +37,9 @@ export function ChatInput({ onSend, disabled }: ChatInputProps) {
   }
 
   return (
-    <div className="border-t bg-white shrink-0">
+    <div className="border-t border-outline-variant/30 bg-surface-container-lowest shrink-0">
       <div className="max-w-3xl mx-auto p-4">
-        <div className="relative flex items-end gap-2 rounded-2xl border bg-white shadow-sm focus-within:border-brand-400 focus-within:ring-2 focus-within:ring-brand-100 transition-all">
+        <div className="relative flex items-end gap-2 rounded-2xl border border-outline-variant bg-surface-container-lowest shadow-sm focus-within:border-primary focus-within:ring-2 focus-within:ring-primary-container/20 transition-all">
           <textarea
             ref={textareaRef}
             value={value}

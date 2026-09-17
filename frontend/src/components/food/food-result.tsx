@@ -1,25 +1,13 @@
 "use client";
 
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { Separator } from "@/components/ui/separator";
-import {
-  CheckCircle2, AlertCircle, Flame, Beef, Wheat, Droplet,
-  Lightbulb, Sparkles, Target,
-} from "lucide-react";
+import { useRouter } from "next/navigation";
+import { Sparkles, MessageCircle } from "lucide-react";
 
 interface FoodResultProps {
   result: {
     id: string;
     analysis: {
-      detected_foods: Array<{
-        name: string;
-        calories: number;
-        protein_g: number;
-        carbs_g: number;
-        fat_g: number;
-        portion: string;
-      }>;
+      detected_foods: Array<{ name: string; calories: number; protein_g: number; carbs_g: number; fat_g: number; portion: string }>;
       total_calories: number;
       total_protein: number;
       total_carbs: number;
@@ -33,155 +21,128 @@ interface FoodResultProps {
   };
 }
 
-export function FoodResult({ result }: FoodResultProps) {
-  const { analysis } = result;
-  const Icon = analysis.is_suitable ? CheckCircle2 : AlertCircle;
-
+function CircularScore({ score }: { score: number }) {
+  const size = 64; const sw = 6;
+  const r = (size - sw) / 2;
+  const circ = 2 * Math.PI * r;
+  const progress = (score / 100) * circ;
   return (
-    <div className="space-y-4 animate-fade-in">
-      {/* Goal Assessment */}
-      <Card className={analysis.is_suitable ? "border-green-200" : "border-amber-200"}>
-        <CardContent className="pt-6">
-          <div className="flex items-start gap-4">
-            <div className={`p-3 rounded-full ${analysis.is_suitable ? "bg-green-100" : "bg-amber-100"}`}>
-              <Icon className={`h-6 w-6 ${analysis.is_suitable ? "text-green-600" : "text-amber-600"}`} />
-            </div>
-            <div className="flex-1">
-              <div className="flex items-center gap-2 mb-2">
-                <h3 className="font-semibold text-lg">
-                  {analysis.is_suitable ? "Aligned with your goal" : "Not ideal for your goal"}
-                </h3>
-                <Badge variant={analysis.is_suitable ? "success" : "warning"}>
-                  {analysis.is_suitable ? "Good Choice" : "Be Mindful"}
-                </Badge>
-              </div>
-              <p className="text-sm text-muted-foreground mb-2">{analysis.goal_assessment}</p>
-              <p className="text-sm text-foreground/80">{analysis.explanation}</p>
-            </div>
-          </div>
-        </CardContent>
-      </Card>
-
-      {/* Macros */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-        <MacroCard
-          icon={<Flame className="h-5 w-5" />}
-          label="Calories"
-          value={analysis.total_calories}
-          unit="kcal"
-          color="bg-orange-50 text-orange-600"
-        />
-        <MacroCard
-          icon={<Beef className="h-5 w-5" />}
-          label="Protein"
-          value={analysis.total_protein}
-          unit="g"
-          color="bg-red-50 text-red-600"
-        />
-        <MacroCard
-          icon={<Wheat className="h-5 w-5" />}
-          label="Carbs"
-          value={analysis.total_carbs}
-          unit="g"
-          color="bg-yellow-50 text-yellow-600"
-        />
-        <MacroCard
-          icon={<Droplet className="h-5 w-5" />}
-          label="Fat"
-          value={analysis.total_fat}
-          unit="g"
-          color="bg-blue-50 text-blue-600"
-        />
+    <div className="relative w-16 h-16">
+      <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`}>
+        <circle cx={size/2} cy={size/2} r={r} fill="none" stroke="#e6eeff" strokeWidth={sw} />
+        <circle cx={size/2} cy={size/2} r={r} fill="none" stroke="#006c49" strokeWidth={sw}
+          strokeDasharray={`${progress} ${circ}`} strokeLinecap="round"
+          transform={`rotate(-90 ${size/2} ${size/2})`} />
+      </svg>
+      <div className="absolute inset-0 flex items-center justify-center">
+        <Sparkles className="h-4 w-4 text-primary" />
       </div>
-
-      {/* Detected Foods */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="text-base flex items-center gap-2">
-            <Target className="h-5 w-5 text-purple-600" />
-            Detected Items ({analysis.detected_foods.length})
-          </CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className="space-y-3">
-            {analysis.detected_foods.map((food, idx) => (
-              <div key={idx} className="flex items-center justify-between p-3 rounded-lg bg-muted/40">
-                <div>
-                  <p className="font-medium">{food.name}</p>
-                  <p className="text-xs text-muted-foreground">{food.portion}</p>
-                </div>
-                <div className="text-right text-sm">
-                  <p className="font-semibold">{food.calories} kcal</p>
-                  <p className="text-xs text-muted-foreground">
-                    P {food.protein_g}g · C {food.carbs_g}g · F {food.fat_g}g
-                  </p>
-                </div>
-              </div>
-            ))}
-          </div>
-        </CardContent>
-      </Card>
-
-      {/* Alternatives */}
-      {analysis.alternatives && analysis.alternatives.length > 0 && (
-        <Card>
-          <CardHeader>
-            <CardTitle className="text-base flex items-center gap-2">
-              <Sparkles className="h-5 w-5 text-brand-600" />
-              Healthier Alternatives
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <ul className="space-y-2">
-              {analysis.alternatives.map((alt, idx) => (
-                <li key={idx} className="flex items-start gap-2 text-sm">
-                  <span className="shrink-0 mt-1 w-1.5 h-1.5 rounded-full bg-brand-500"></span>
-                  <span>{alt}</span>
-                </li>
-              ))}
-            </ul>
-          </CardContent>
-        </Card>
-      )}
-
-      {/* Recommendations */}
-      {analysis.recommendations && (
-        <Card className="bg-blue-50 border-blue-200">
-          <CardContent className="pt-6">
-            <div className="flex gap-3">
-              <div className="p-2 bg-blue-100 rounded-lg shrink-0">
-                <Lightbulb className="h-5 w-5 text-blue-600" />
-              </div>
-              <div>
-                <p className="font-semibold text-blue-900 mb-1">Personalized Tip</p>
-                <p className="text-sm text-blue-800">{analysis.recommendations}</p>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-      )}
-
-      <p className="text-xs text-center text-muted-foreground italic">
-        All nutritional values are AI estimates and may not be exact.
-      </p>
     </div>
   );
 }
 
-function MacroCard({ icon, label, value, unit, color }: {
-  icon: React.ReactNode; label: string; value: number; unit: string; color: string;
-}) {
+export function FoodResult({ result }: FoodResultProps) {
+  const { analysis } = result;
+  const router = useRouter();
+  const healthScore = analysis.is_suitable ? 85 : 45;
+  const foods = analysis.detected_foods || [];
+
+  function askCoach() {
+    const foodList = foods.map(f => f.name).join(", ");
+    const openers = [
+      `${foodList} — ${analysis.total_calories} kcal.`,
+      `Just had: ${foodList} (${analysis.total_calories} kcal).`,
+      `Here's what I ate: ${foodList}, around ${analysis.total_calories} kcal.`,
+      `Logged ${foodList} — came out to ${analysis.total_calories} kcal.`,
+    ];
+    const opener = openers[Math.floor(Math.random() * openers.length)];
+    const msg = encodeURIComponent(`${opener} ${analysis.goal_assessment}`);
+    router.push(`/chat?q=${msg}`);
+  }
+
   return (
-    <Card>
-      <CardContent className="pt-6">
-        <div className="flex items-center justify-between mb-2">
-          <span className="text-sm text-muted-foreground">{label}</span>
-          <div className={`p-1.5 rounded-md ${color}`}>{icon}</div>
+    <div className="space-y-4 animate-fade-in">
+      {/* Health Score */}
+      <div className="bg-surface-container-lowest rounded-2xl p-5 border border-outline-variant/30 shadow-sm">
+        <p className="text-xs font-semibold text-on-surface-variant uppercase tracking-wider mb-3">Health Score</p>
+        <div className="flex items-center gap-4">
+          <div>
+            <div className="flex items-end gap-1">
+              <span className="text-4xl font-bold text-on-surface">{healthScore}</span>
+              <span className="text-lg text-on-surface-variant mb-1">/100</span>
+            </div>
+            <p className="text-sm font-medium text-primary">{analysis.is_suitable ? "Great Choice!" : "Be Mindful"}</p>
+          </div>
+          <CircularScore score={healthScore} />
         </div>
-        <p className="text-2xl font-bold">
-          {value}<span className="text-sm text-muted-foreground ml-1">{unit}</span>
-        </p>
-      </CardContent>
-    </Card>
+      </div>
+
+      {/* Visual Breakdown */}
+      {foods.length > 0 && (
+        <div className="bg-surface-container-lowest rounded-2xl p-5 border border-outline-variant/30 shadow-sm">
+          <div className="flex items-center justify-between mb-3">
+            <p className="font-semibold text-on-surface">Visual Breakdown</p>
+            <span className="text-xs text-on-surface-variant">{foods.length} item{foods.length !== 1 ? "s" : ""}</span>
+          </div>
+          <div className="grid grid-cols-2 gap-3">
+            {foods.slice(0, 4).map((food, i) => (
+              <div key={i} className="flex items-center gap-2 p-3 rounded-xl bg-surface-container-low">
+                <div className="w-8 h-8 rounded-lg bg-primary-container/20 flex items-center justify-center text-sm shrink-0">
+                  {["🥑","🍞","🥚","🌿","🥗","🍗","🥩","🍚"][i % 8]}
+                </div>
+                <div className="min-w-0">
+                  <p className="text-xs font-medium text-on-surface truncate">{food.name}</p>
+                  <p className="text-xs text-on-surface-variant">{food.calories} kcal</p>
+                </div>
+              </div>
+            ))}
+          </div>
+          <div className="mt-3 grid grid-cols-3 gap-2 text-center">
+            <div className="bg-surface-container-low rounded-xl p-2">
+              <p className="text-xs text-on-surface-variant">Protein</p>
+              <p className="text-sm font-bold text-primary">{analysis.total_protein}g</p>
+            </div>
+            <div className="bg-surface-container-low rounded-xl p-2">
+              <p className="text-xs text-on-surface-variant">Carbs</p>
+              <p className="text-sm font-bold text-tertiary">{analysis.total_carbs}g</p>
+            </div>
+            <div className="bg-surface-container-low rounded-xl p-2">
+              <p className="text-xs text-on-surface-variant">Fats</p>
+              <p className="text-sm font-bold text-secondary">{analysis.total_fat}g</p>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Coach's Tip */}
+      {analysis.recommendations && (
+        <div className="bg-primary rounded-2xl p-5">
+          <div className="flex items-start gap-3">
+            <div className="w-8 h-8 rounded-full bg-on-primary/20 flex items-center justify-center shrink-0 mt-0.5">
+              <Sparkles className="h-4 w-4 text-on-primary" />
+            </div>
+            <div>
+              <p className="text-xs font-semibold text-secondary-container mb-1">COACH&apos;S TIP</p>
+              <p className="text-sm text-on-primary leading-relaxed">
+                {analysis.recommendations}{" "}
+                {analysis.alternatives?.length > 0 && (
+                  <span className="text-secondary-container font-medium">{analysis.alternatives[0]}</span>
+                )}
+              </p>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Button */}
+      <button onClick={askCoach}
+        className="w-full py-3 bg-primary hover:bg-secondary text-on-primary font-medium rounded-xl transition-colors flex items-center justify-center gap-2">
+        <MessageCircle className="h-4 w-4" /> Ask Coach about this
+      </button>
+
+      <p className="text-xs text-center text-on-surface-variant italic">
+        AI GENERATED HEALTH INSIGHTS. NOT MEDICAL ADVICE.
+      </p>
+    </div>
   );
 }

@@ -67,13 +67,13 @@ export default function FoodAnalysisPage() {
     <div className="space-y-6 animate-fade-in">
       {/* Header */}
       <div>
-        <h1 className="text-3xl font-bold tracking-tight flex items-center gap-3">
-          <div className="p-2 bg-purple-100 rounded-lg">
-            <Camera className="h-6 w-6 text-purple-600" />
+        <h1 className="text-2xl md:text-3xl font-semibold tracking-tight text-on-surface flex items-center gap-3">
+          <div className="p-2 bg-primary-container/20 rounded-xl">
+            <Camera className="h-6 w-6 text-primary" />
           </div>
           Food Analysis
         </h1>
-        <p className="text-muted-foreground mt-1">
+        <p className="text-on-surface-variant mt-1">
           Upload a food image to get instant nutrition analysis personalized for your goals.
         </p>
       </div>
@@ -88,11 +88,11 @@ export default function FoodAnalysisPage() {
 
       {/* Loading state */}
       {analyzeMutation.isPending && (
-        <Card>
+        <Card className="rounded-2xl border-outline-variant/30 bg-surface-container-lowest">
           <CardContent className="pt-6 flex flex-col items-center gap-3 py-8">
-            <Loader2 className="h-8 w-8 text-brand-600 animate-spin" />
-            <p className="font-medium">Analyzing your food...</p>
-            <p className="text-sm text-muted-foreground">This usually takes 5-10 seconds</p>
+            <Loader2 className="h-8 w-8 text-primary animate-spin" />
+            <p className="font-medium text-on-surface">Analyzing your food...</p>
+            <p className="text-sm text-on-surface-variant">This usually takes 5-10 seconds</p>
           </CardContent>
         </Card>
       )}
@@ -103,10 +103,10 @@ export default function FoodAnalysisPage() {
       )}
 
       {/* History */}
-      <Card>
+      <Card className="rounded-2xl border-outline-variant/30 bg-surface-container-lowest">
         <CardHeader>
-          <CardTitle className="flex items-center gap-2 text-lg">
-            <History className="h-5 w-5 text-muted-foreground" />
+          <CardTitle className="flex items-center gap-2 text-lg text-on-surface">
+            <History className="h-5 w-5 text-on-surface-variant" />
             Past Analyses
           </CardTitle>
         </CardHeader>
@@ -121,25 +121,25 @@ export default function FoodAnalysisPage() {
                 <button
                   key={item.id}
                   onClick={() => handleHistoryClick(item)}
-                  className="flex items-center gap-3 p-3 rounded-lg border bg-white hover:border-purple-300 hover:bg-purple-50 transition-all text-left"
+                  className="flex items-center gap-3 p-3 rounded-xl border border-outline-variant/50 bg-surface-container-lowest hover:border-primary/40 hover:bg-primary/5 transition-all text-left"
                 >
-                  <div className="p-2 bg-purple-100 rounded-lg shrink-0">
-                    <ChefHat className="h-4 w-4 text-purple-600" />
+                  <div className="p-2 bg-primary-container/20 rounded-lg shrink-0">
+                    <ChefHat className="h-4 w-4 text-primary" />
                   </div>
                   <div className="flex-1 min-w-0">
-                    <p className="font-medium text-sm truncate">{item.detected_food || "Food"}</p>
+                    <p className="font-medium text-sm text-on-surface truncate">{item.detected_food || "Food"}</p>
                     <div className="flex items-center gap-2 mt-1">
                       <Badge variant={item.analysis_result?.is_suitable ? "success" : "warning"} className="text-xs">
                         {item.analysis_result?.total_calories || 0} kcal
                       </Badge>
-                      <span className="text-xs text-muted-foreground">{formatDate(item.created_at)}</span>
+                      <span className="text-xs text-on-surface-variant">{formatDate(item.created_at)}</span>
                     </div>
                   </div>
                 </button>
               ))}
             </div>
           ) : (
-            <div className="text-center py-8 text-muted-foreground">
+            <div className="text-center py-8 text-on-surface-variant">
               <Camera className="h-12 w-12 mx-auto mb-2 opacity-30" />
               <p className="text-sm">No analyses yet. Upload your first food image above!</p>
             </div>

@@ -56,10 +56,14 @@ export const chatAPI = {
   clearHistory: () => apiClient.delete("/chat/history"),
 };
 
+const VISION_TIMEOUT = 300000;  // 5 min  — single vision call (food analysis)
+const RECIPE_TIMEOUT = 600000;  // 10 min — two sequential AI calls (vision + chat)
+
 export const foodAPI = {
   analyzeImage: (formData: FormData) =>
     apiClient.post("/analyze-food", formData, {
       headers: { "Content-Type": "multipart/form-data" },
+      timeout: VISION_TIMEOUT,
     }),
   getHistory: () => apiClient.get("/analyze-food/history"),
 };
@@ -68,6 +72,7 @@ export const recipeAPI = {
   generate: (formData: FormData) =>
     apiClient.post("/generate-recipe", formData, {
       headers: { "Content-Type": "multipart/form-data" },
+      timeout: RECIPE_TIMEOUT,
     }),
   getHistory: () => apiClient.get("/generate-recipe/history"),
 };

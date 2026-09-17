@@ -70,7 +70,7 @@ export function RecipeUploader({ onFilesSelected, isGenerating }: RecipeUploader
   }
 
   return (
-    <Card className="p-6">
+    <Card className="p-6 rounded-2xl border-outline-variant/30 bg-surface-container-lowest">
       {/* Hidden camera input (outside dropzone) */}
       <input
         ref={cameraInputRef}
@@ -89,27 +89,27 @@ export function RecipeUploader({ onFilesSelected, isGenerating }: RecipeUploader
             <div
               {...getRootProps()}
               className={cn(
-                "border-2 border-dashed rounded-lg p-8 text-center cursor-pointer transition-all",
+                "border-2 border-dashed rounded-2xl p-8 text-center cursor-pointer transition-all",
                 isDragActive
-                  ? "border-orange-500 bg-orange-50"
-                  : "border-border hover:border-orange-300 hover:bg-muted/30",
+                  ? "border-tertiary bg-tertiary-container/10"
+                  : "border-outline-variant hover:border-tertiary/40 hover:bg-surface-container-low",
                 isGenerating && "opacity-50 cursor-not-allowed"
               )}
             >
               <input {...getInputProps()} />
               <div className="flex flex-col items-center gap-3">
-                <div className="p-3 bg-orange-100 rounded-full">
-                  <Upload className="h-6 w-6 text-orange-600" />
+                <div className="p-3 bg-tertiary-container/20 rounded-full">
+                  <Upload className="h-6 w-6 text-tertiary" />
                 </div>
                 <div>
-                  <p className="font-semibold">
+                  <p className="font-semibold text-on-surface">
                     {isDragActive
                       ? "Drop images here"
                       : files.length === 0
                       ? "Upload ingredient images"
                       : "Add more ingredients"}
                   </p>
-                  <p className="text-sm text-muted-foreground mt-1">
+                  <p className="text-sm text-on-surface-variant mt-1">
                     Drag & drop or click • {files.length}/{MAX_IMAGES} images
                   </p>
                 </div>
@@ -118,9 +118,9 @@ export function RecipeUploader({ onFilesSelected, isGenerating }: RecipeUploader
 
             {/* OR divider — OUTSIDE dropzone */}
             <div className="flex items-center gap-3 w-full max-w-xs mx-auto">
-              <div className="flex-1 h-px bg-border"></div>
-              <span className="text-xs text-muted-foreground font-medium">OR</span>
-              <div className="flex-1 h-px bg-border"></div>
+              <div className="flex-1 h-px bg-outline-variant"></div>
+              <span className="text-xs text-on-surface-variant font-medium">OR</span>
+              <div className="flex-1 h-px bg-outline-variant"></div>
             </div>
 
             {/* Camera button — OUTSIDE dropzone */}
@@ -143,7 +143,7 @@ export function RecipeUploader({ onFilesSelected, isGenerating }: RecipeUploader
         {previews.length > 0 && (
           <div>
             <div className="flex items-center justify-between mb-3">
-              <p className="text-sm font-medium">
+              <p className="text-sm font-medium text-on-surface">
                 {files.length} {files.length === 1 ? "image" : "images"} selected
               </p>
               <Button
@@ -151,7 +151,7 @@ export function RecipeUploader({ onFilesSelected, isGenerating }: RecipeUploader
                 size="sm"
                 onClick={clearAll}
                 disabled={isGenerating}
-                className="text-muted-foreground"
+                className="text-on-surface-variant"
               >
                 <X className="h-4 w-4 mr-1" /> Clear all
               </Button>
@@ -159,12 +159,12 @@ export function RecipeUploader({ onFilesSelected, isGenerating }: RecipeUploader
 
             <div className="grid grid-cols-3 sm:grid-cols-5 gap-3">
               {previews.map((url, idx) => (
-                <div key={idx} className="relative aspect-square rounded-lg overflow-hidden border group">
+                <div key={idx} className="relative aspect-square rounded-xl overflow-hidden border border-outline-variant/50 group">
                   <img src={url} alt={`Ingredient ${idx + 1}`} className="w-full h-full object-cover" />
                   {!isGenerating && (
                     <button
                       onClick={() => removeFile(idx)}
-                      className="absolute top-1 right-1 p-1 rounded-full bg-black/70 text-white opacity-0 group-hover:opacity-100 transition-opacity hover:bg-red-600"
+                      className="absolute top-1 right-1 p-1 rounded-full bg-on-surface/70 text-on-primary opacity-0 group-hover:opacity-100 transition-opacity hover:bg-destructive"
                     >
                       <X className="h-3 w-3" />
                     </button>
@@ -175,18 +175,18 @@ export function RecipeUploader({ onFilesSelected, isGenerating }: RecipeUploader
                 <div className="flex flex-col gap-1">
                   <button
                     {...getRootProps()}
-                    className="aspect-square rounded-lg border-2 border-dashed flex items-center justify-center hover:border-orange-300 hover:bg-orange-50 transition-all flex-1"
+                    className="aspect-square rounded-xl border-2 border-dashed border-outline-variant flex items-center justify-center hover:border-tertiary/40 hover:bg-tertiary-container/10 transition-all flex-1"
                   >
                     <input {...getInputProps()} />
-                    <ImagePlus className="h-5 w-5 text-muted-foreground" />
+                    <ImagePlus className="h-5 w-5 text-on-surface-variant" />
                   </button>
                   <button
                     type="button"
                     onClick={handleCameraClick}
                     disabled={isGenerating}
-                    className="aspect-square rounded-lg border-2 border-dashed flex items-center justify-center hover:border-orange-300 hover:bg-orange-50 transition-all flex-1"
+                    className="aspect-square rounded-xl border-2 border-dashed border-outline-variant flex items-center justify-center hover:border-tertiary/40 hover:bg-tertiary-container/10 transition-all flex-1"
                   >
-                    <Camera className="h-5 w-5 text-muted-foreground" />
+                    <Camera className="h-5 w-5 text-on-surface-variant" />
                   </button>
                 </div>
               )}
@@ -195,7 +195,7 @@ export function RecipeUploader({ onFilesSelected, isGenerating }: RecipeUploader
             <Button
               onClick={handleGenerate}
               disabled={isGenerating || files.length === 0}
-              className="w-full mt-4 bg-orange-600 hover:bg-orange-700"
+              className="w-full mt-4 bg-tertiary-container hover:bg-tertiary text-on-tertiary-container hover:text-on-tertiary rounded-xl"
               size="lg"
             >
               <ChefHat className="h-5 w-5 mr-2" />

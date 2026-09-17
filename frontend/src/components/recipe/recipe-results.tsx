@@ -25,17 +25,17 @@ interface RecipeResultsProps {
 export function RecipeResults({ result }: RecipeResultsProps) {
   const { output } = result;
   const recipes = [
-    { ...output.best_match, type: "best", icon: Award, color: "amber", title: "Best Match" },
-    { ...output.alternative, type: "alt", icon: Sparkles, color: "blue", title: "Alternative" },
-    { ...output.quick_option, type: "quick", icon: Zap, color: "green", title: "Quick Option" },
+    { ...output.best_match, type: "best", icon: Award, color: "primary", title: "Best Match" },
+    { ...output.alternative, type: "alt", icon: Sparkles, color: "secondary", title: "Alternative" },
+    { ...output.quick_option, type: "quick", icon: Zap, color: "tertiary", title: "Quick Option" },
   ];
 
   return (
     <div className="space-y-4 animate-fade-in">
       {/* Detected Ingredients */}
-      <Card className="border-orange-200 bg-orange-50/50">
+      <Card className="rounded-2xl border-tertiary-container/40 bg-tertiary-container/10">
         <CardContent className="pt-6">
-          <p className="text-sm font-semibold text-orange-900 mb-2">
+          <p className="text-sm font-semibold text-on-tertiary-container mb-2">
             🥗 Detected Ingredients
           </p>
           <div className="flex flex-wrap gap-2">
@@ -55,7 +55,7 @@ export function RecipeResults({ result }: RecipeResultsProps) {
         ))}
       </div>
 
-      <p className="text-xs text-center text-muted-foreground italic">
+      <p className="text-xs text-center text-on-surface-variant italic">
         Nutritional values are AI estimates and personalized to your profile.
       </p>
     </div>
@@ -67,18 +67,18 @@ function RecipeCard({ ranked }: { ranked: any }) {
   const { recipe, reason, modifications, color, icon: Icon, title } = ranked;
 
   const colorMap: Record<string, { bg: string; text: string; border: string; ring: string }> = {
-    amber: { bg: "bg-amber-100", text: "text-amber-700", border: "border-amber-200", ring: "ring-amber-300" },
-    blue: { bg: "bg-blue-100", text: "text-blue-700", border: "border-blue-200", ring: "ring-blue-300" },
-    green: { bg: "bg-green-100", text: "text-green-700", border: "border-green-200", ring: "ring-green-300" },
+    primary: { bg: "bg-primary-container/15", text: "text-primary", border: "border-primary-container/40", ring: "ring-primary-container" },
+    secondary: { bg: "bg-secondary-container/40", text: "text-secondary", border: "border-secondary-container", ring: "ring-secondary-container" },
+    tertiary: { bg: "bg-tertiary-container/15", text: "text-tertiary", border: "border-tertiary-container/40", ring: "ring-tertiary-container" },
   };
   const c = colorMap[color];
 
   return (
-    <Card className={cn(c.border, ranked.rank === 1 && `ring-2 ${c.ring}`)}>
+    <Card className={cn("rounded-2xl", c.border, ranked.rank === 1 && `ring-2 ${c.ring}`)}>
       <CardHeader className="pb-3">
         <div className="flex items-start justify-between">
           <div className="flex items-start gap-3">
-            <div className={cn("p-2.5 rounded-lg shrink-0", c.bg)}>
+            <div className={cn("p-2.5 rounded-xl shrink-0", c.bg)}>
               <Icon className={cn("h-5 w-5", c.text)} />
             </div>
             <div>
@@ -90,8 +90,8 @@ function RecipeCard({ ranked }: { ranked: any }) {
                   {recipe.difficulty}
                 </Badge>
               </div>
-              <CardTitle className="text-lg">{recipe.name}</CardTitle>
-              <p className="text-sm text-muted-foreground mt-1">{recipe.description}</p>
+              <CardTitle className="text-lg text-on-surface">{recipe.name}</CardTitle>
+              <p className="text-sm text-on-surface-variant mt-1">{recipe.description}</p>
             </div>
           </div>
         </div>

@@ -13,6 +13,13 @@ const nextConfig = {
       allowedOrigins: ["localhost:3000"],
     },
   },
+  webpack: (config, { dev }) => {
+    if (dev) {
+      // Limit webpack parallelism to reduce RAM usage during dev
+      config.parallelism = 1;
+    }
+    return config;
+  },
 };
 
 export default nextConfig;

@@ -45,7 +45,7 @@ export function FoodUploader({ onFileSelect, onClear, previewUrl, isAnalyzing }:
 
   if (previewUrl) {
     return (
-      <Card className="overflow-hidden">
+      <Card className="overflow-hidden rounded-2xl border-outline-variant/30">
         <div className="relative">
           <img
             src={previewUrl}
@@ -68,7 +68,7 @@ export function FoodUploader({ onFileSelect, onClear, previewUrl, isAnalyzing }:
   }
 
   return (
-    <Card className="p-6">
+    <Card className="p-6 rounded-2xl border-outline-variant/30 bg-surface-container-lowest">
       {/* Hidden camera input (outside the dropzone!) */}
       <input
         ref={cameraInputRef}
@@ -84,26 +84,26 @@ export function FoodUploader({ onFileSelect, onClear, previewUrl, isAnalyzing }:
       <div
         {...getRootProps()}
         className={cn(
-          "border-2 border-dashed rounded-lg p-10 text-center cursor-pointer transition-all",
+          "border-2 border-dashed rounded-2xl p-10 text-center cursor-pointer transition-all",
           isDragActive
-            ? "border-brand-500 bg-brand-50"
-            : "border-border hover:border-brand-300 hover:bg-muted/30",
+            ? "border-primary bg-primary/5"
+            : "border-outline-variant hover:border-primary/40 hover:bg-surface-container-low",
           isAnalyzing && "opacity-50 cursor-not-allowed"
         )}
       >
         <input {...getInputProps()} />
         <div className="flex flex-col items-center gap-3">
-          <div className="p-4 bg-brand-100 rounded-full">
-            <Upload className="h-8 w-8 text-brand-600" />
+          <div className="p-4 bg-primary-container/20 rounded-full">
+            <Upload className="h-8 w-8 text-primary" />
           </div>
           <div>
-            <p className="font-semibold text-lg">
+            <p className="font-semibold text-lg text-on-surface">
               {isDragActive ? "Drop your image here" : "Upload a food image"}
             </p>
-            <p className="text-sm text-muted-foreground mt-1">
+            <p className="text-sm text-on-surface-variant mt-1">
               Drag & drop or click to browse
             </p>
-            <p className="text-xs text-muted-foreground mt-2">
+            <p className="text-xs text-on-surface-variant mt-2">
               JPEG, PNG, or WEBP • Max 10MB
             </p>
           </div>
@@ -112,9 +112,9 @@ export function FoodUploader({ onFileSelect, onClear, previewUrl, isAnalyzing }:
 
       {/* OR divider — OUTSIDE dropzone */}
       <div className="flex items-center gap-3 w-full max-w-xs mx-auto my-4">
-        <div className="flex-1 h-px bg-border"></div>
-        <span className="text-xs text-muted-foreground font-medium">OR</span>
-        <div className="flex-1 h-px bg-border"></div>
+        <div className="flex-1 h-px bg-outline-variant"></div>
+        <span className="text-xs text-on-surface-variant font-medium">OR</span>
+        <div className="flex-1 h-px bg-outline-variant"></div>
       </div>
 
       {/* Camera button — OUTSIDE dropzone, no click conflict */}
@@ -124,7 +124,7 @@ export function FoodUploader({ onFileSelect, onClear, previewUrl, isAnalyzing }:
           variant="outline"
           onClick={handleCameraClick}
           disabled={isAnalyzing}
-          className="gap-2"
+          className="gap-2 rounded-lg border-outline-variant"
         >
           <Camera className="h-4 w-4" />
           Take a Photo

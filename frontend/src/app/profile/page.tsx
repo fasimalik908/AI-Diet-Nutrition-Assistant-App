@@ -109,12 +109,14 @@ export default function ProfilePage() {
     );
   }
 
+  const initials = profile.name ? profile.name.trim().charAt(0).toUpperCase() : "U";
+
   return (
     <div className="space-y-6 animate-fade-in">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight">My Profile</h1>
-          <p className="text-muted-foreground mt-1">View and update your information</p>
+          <h1 className="text-2xl md:text-3xl font-semibold tracking-tight text-on-surface">My Profile</h1>
+          <p className="text-on-surface-variant mt-1">View and update your information</p>
         </div>
         {!editing ? (
           <Button onClick={() => setEditing(true)}>
@@ -127,12 +129,25 @@ export default function ProfilePage() {
         )}
       </div>
 
+      {/* Hero card */}
+      <Card className="rounded-2xl border-outline-variant/30 bg-surface-container-lowest">
+        <CardContent className="pt-6 flex flex-col items-center text-center">
+          <div className="w-20 h-20 rounded-full bg-primary-container flex items-center justify-center mb-3">
+            <span className="text-on-primary-container text-3xl font-bold">{initials}</span>
+          </div>
+          <h2 className="text-lg font-semibold text-on-surface">{profile.name}</h2>
+          <span className="mt-2 inline-flex items-center px-3 py-1 rounded-full bg-primary/10 text-primary text-xs font-semibold">
+            {formatGoal(profile.goal)}
+          </span>
+        </CardContent>
+      </Card>
+
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* BMI Card */}
-        <Card>
+        <Card className="rounded-2xl border-outline-variant/30 bg-surface-container-lowest">
           <CardHeader>
-            <CardTitle className="flex items-center gap-2 text-lg">
-              <TrendingUp className="h-5 w-5 text-brand-600" /> BMI
+            <CardTitle className="flex items-center gap-2 text-lg text-on-surface">
+              <TrendingUp className="h-5 w-5 text-primary" /> BMI
             </CardTitle>
           </CardHeader>
           <CardContent className="text-center">
@@ -148,24 +163,24 @@ export default function ProfilePage() {
             </Badge>
             <div className="mt-4 h-2 rounded-full bg-gradient-to-r from-blue-400 via-green-400 to-red-400 relative">
               <div
-                className="absolute top-1/2 -translate-y-1/2 w-3 h-3 rounded-full bg-white border-2 border-gray-700 shadow"
+                className="absolute top-1/2 -translate-y-1/2 w-3 h-3 rounded-full bg-surface-container-lowest border-2 border-on-surface shadow"
                 style={{ left: `${Math.min(Math.max((((editing && liveBMI ? liveBMI : profile.bmi) - 15) / 25) * 100, 0), 100)}%` }}
               />
             </div>
-            <div className="flex justify-between text-xs text-muted-foreground mt-1">
+            <div className="flex justify-between text-xs text-on-surface-variant mt-1">
               <span>15</span><span>18.5</span><span>25</span><span>30</span><span>40</span>
             </div>
-            <p className="text-xs text-muted-foreground mt-3">Goal: {formatGoal(profile.goal)}</p>
+            <p className="text-xs text-on-surface-variant mt-3">Goal: {formatGoal(profile.goal)}</p>
           </CardContent>
         </Card>
 
         {/* Details Card */}
-        <Card className="lg:col-span-2">
+        <Card className="lg:col-span-2 rounded-2xl border-outline-variant/30 bg-surface-container-lowest">
           <CardHeader>
-            <CardTitle className="flex items-center gap-2 text-lg">
-              <User className="h-5 w-5 text-brand-600" /> Personal Details
+            <CardTitle className="flex items-center gap-2 text-lg text-on-surface">
+              <User className="h-5 w-5 text-primary" /> Personal Details
             </CardTitle>
-            <CardDescription>
+            <CardDescription className="text-on-surface-variant">
               {editing ? "Make changes to your profile" : "Your saved information"}
             </CardDescription>
           </CardHeader>
@@ -238,9 +253,9 @@ function Field({ label, editing, value, children, capitalize, className }: {
 }) {
   return (
     <div className={`space-y-1.5 ${className || ""}`}>
-      <Label className="text-xs uppercase tracking-wide text-muted-foreground">{label}</Label>
+      <Label className="text-xs uppercase tracking-wide text-on-surface-variant">{label}</Label>
       {editing ? children : (
-        <p className={`text-sm font-medium pt-1 ${capitalize ? "capitalize" : ""}`}>{value}</p>
+        <p className={`text-sm font-medium text-on-surface pt-1 ${capitalize ? "capitalize" : ""}`}>{value}</p>
       )}
     </div>
   );

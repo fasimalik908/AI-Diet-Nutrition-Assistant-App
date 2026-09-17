@@ -6,10 +6,8 @@ function getGroqClient() {
   return new Groq({ apiKey });
 }
 
-const CHAT_MODEL = process.env.GROQ_MODEL || "llama-3.3-70b-versatile";
-const VISION_MODEL =
-  process.env.GROQ_VISION_MODEL ||
-  "meta-llama/llama-4-scout-17b-16e-instruct";
+const CHAT_MODEL = process.env.GROQ_MODEL || "openai/gpt-oss-120b";
+const VISION_MODEL = process.env.GROQ_VISION_MODEL || "qwen/qwen3.8-27b";
 
 type Message = { role: "system" | "user" | "assistant"; content: string };
 

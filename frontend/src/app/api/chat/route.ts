@@ -1,5 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { withAuth } from "@/lib/server/auth";
+
+export const maxDuration = 120;
 import { ChatRequestSchema } from "@/lib/server/schemas";
 import { badRequest } from "@/lib/server/errors";
 import { buildChatContext, saveMessage, getChatCount, updateMemorySummary } from "@/lib/server/memory";
