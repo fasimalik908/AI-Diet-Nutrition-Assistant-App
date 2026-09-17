@@ -1,4 +1,4 @@
-# AI Diet & Nutrition Assistant
+# NutriVision AI
 
 A full-stack AI-powered nutrition assistant built with **Next.js 16**, **Supabase**, and **Groq AI**. Users get personalized diet advice, food image analysis, and recipe generation — all based on their body metrics and health goals.
 
@@ -13,6 +13,7 @@ A full-stack AI-powered nutrition assistant built with **Next.js 16**, **Supabas
 - **Food Analysis** — Upload or photograph food → AI identifies items and returns full nutrition breakdown
 - **Recipe Generator** — Upload ingredient images → AI detects ingredients and generates 3 personalized ranked recipes
 - **Profile Management** — View and edit profile with live BMI calculator
+- **NutriVision AI Design System** — Emerald-green, mobile-first UI with a glassmorphic auth flow, bento-grid dashboard, and consistent rounded-card language throughout
 
 ---
 
@@ -24,8 +25,8 @@ A full-stack AI-powered nutrition assistant built with **Next.js 16**, **Supabas
 | Language | TypeScript |
 | Styling | Tailwind CSS + shadcn/ui |
 | Auth + Database | Supabase |
-| AI — Chat | Groq (Llama 3.3 70B Versatile) |
-| AI — Vision | Groq (Llama 4 Scout 17B) |
+| AI — Chat | Groq (`openai/gpt-oss-120b`) |
+| AI — Vision | Groq (`qwen/qwen3.8-27b`) |
 | State Management | TanStack React Query v5 |
 | Validation | Zod v4 |
 | HTTP Client | Axios |
@@ -48,18 +49,21 @@ ai-diet-app/
     │   │   │   ├── generate-recipe/        # POST /api/generate-recipe
     │   │   │   ├── generate-recipe/history/
     │   │   │   └── dashboard/stats/        # GET /api/dashboard/stats
-    │   │   ├── auth/                       # Login & Signup pages
+    │   │   ├── auth/                       # Login, Signup & OAuth callback pages
     │   │   ├── dashboard/                  # Dashboard page
     │   │   ├── chat/                       # AI Chat page
     │   │   ├── food-analysis/              # Food Analysis page
     │   │   ├── recipe-generator/           # Recipe Generator page
     │   │   ├── profile/                    # Profile view/edit page
-    │   │   └── profile-setup/              # Onboarding (first-time setup)
+    │   │   ├── profile-setup/              # Onboarding (first-time setup)
+    │   │   ├── icon.svg                    # Favicon
+    │   │   ├── error.tsx                   # Branded error boundary
+    │   │   └── not-found.tsx               # Branded 404 page
     │   ├── components/
-    │   │   ├── chat/                       # ChatMessage, ChatInput
+    │   │   ├── chat/                       # ChatInput
     │   │   ├── food/                       # FoodUploader, FoodResult
     │   │   ├── recipe/                     # RecipeUploader, RecipeResults
-    │   │   ├── layout/                     # Sidebar navigation
+    │   │   ├── layout/                     # Sidebar + MobileNav navigation
     │   │   ├── shared/                     # LoginForm, SignupForm, Providers
     │   │   └── ui/                         # shadcn/ui base components
     │   ├── lib/
@@ -76,7 +80,7 @@ ai-diet-app/
     │   │   │   └── server.ts               # Server Supabase client
     │   │   ├── api.ts                      # Axios client + typed API functions
     │   │   └── utils.ts                    # Client utilities (BMI, formatting)
-    │   ├── middleware.ts                   # Session sync (required for Supabase SSR)
+    │   ├── proxy.ts                        # Session sync + route guard (required for Supabase SSR)
     │   ├── types/index.ts                  # Global TypeScript types
     │   └── styles/globals.css
     └── .env.local                          # Environment variables (create this)
@@ -178,9 +182,11 @@ SUPABASE_SERVICE_ROLE_KEY=your_service_role_key_here
 
 # Groq AI — console.groq.com/keys (free)
 GROQ_API_KEY=gsk_your_key_here
-GROQ_MODEL=llama-3.3-70b-versatile
-GROQ_VISION_MODEL=meta-llama/llama-4-scout-17b-16e-instruct
+GROQ_MODEL=openai/gpt-oss-120b
+GROQ_VISION_MODEL=qwen/qwen3.8-27b
 ```
+
+> **Note:** Groq periodically deprecates older models. Check [console.groq.com/docs/models](https://console.groq.com/docs/models) for the current list if either model above stops working.
 
 ### 3. Run the app
 
